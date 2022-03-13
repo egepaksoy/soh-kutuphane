@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<h1>{{book.book_name}}</h1>
+<h2>{{book.book_writer}}</h2>
+{% if book.alan_og %}
+<div style="display: block; width: 95%; heigth: 5rem; margin: 3rem auto 0 auto; text-align: center; background-color: red;">Kitap Asagıdaki Ogrenci Tarafından alındı</div>
+<h4>{{book.alan_og}}</h4>
+<h5>{{book.alis_tar}}</h5>
+<form method="POST" action="{% url 'book_teslim' id=book.id %}">
+  {% csrf_token %}
+  <input type="submit" class="btn btn-success"/>
+</form>
+{% else %}
+<div style="display: block; width: 95%; heigth: 5rem; margin: 3rem auto 0 auto; text-align: center; background-color: green;">Kitap Mevcut</div>
+<a href="./emanet/">dsds</a>
+{% endif %}
+{% endblock body %}
