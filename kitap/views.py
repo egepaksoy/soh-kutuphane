@@ -41,10 +41,10 @@ def book_teslim(req, id):
 
     b = book.alan_ogrenciler_json
 
-    if book != "null":
-      b.append(json_data)
+    if b == None:
+      b = [json_data]
     else:
-      b = json_data
+      b.append(json_data)
 
     book_update.update(alan_ogrenciler_json=b)
 
