@@ -18,7 +18,11 @@
     <div class="card-body">
       <h5 class="card-title" style="text-align: center; font-size: 26px; margin: 2rem 0 1rem 0;">{{ book.book_name|lower|title }}</h5>
       <p class="card-text" style="text-align: right; font-size: 18px; font-style: italic; margin-bottom: 1rem;">{{ book.book_writer|lower|title }}</p>
-      <input type="submit" value="Detay" style="width: 5rem;" class="btn btn-primary"/>
+      {% if book.alan_og %}
+        <input type="submit" value="Teslim" style="width: 5rem;" class="btn btn-success"/>
+      {% else %}
+        <input type="submit" value="Emanet" style="width: 5rem;" class="btn btn-primary"/>
+      {% endif %}
     </div>
   </form>
 </div>
