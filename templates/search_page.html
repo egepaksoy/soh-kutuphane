@@ -5,19 +5,19 @@
 <div>
   <form method="POST" action="./" class="input-group mb-2" style="width: 60%; margin: 5rem auto 0 auto;">
     {% csrf_token %}
-    <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" name="book_credation" aria-describedby="button-addon2">
-    <button class="btn btn-outline-secondary" type="submit" id="search">Button</button>
+    <input style="font-size: 20px;" type="text" class="form-control" placeholder="Kitap veya Yazar adı girin" aria-label="Recipient's username" name="book_credation" aria-describedby="button-addon2">
+    <button style="font-size: 20px" class="btn btn-outline-secondary" type="submit" id="search">Ara 🔎</button>
   </form>
 </div>
 
 {% if books %}
 {% for book in books %}
-<div class="card" style="width: 18rem;">
+<div class="card" style="width: 50%; margin: 2rem auto; background-color: #f5f5f5;">
   <form method="POST" action="./{{book.id}}/">
     {% csrf_token %}
     <div class="card-body">
-      <h5 class="card-title">{{ book.book_name }}</h5>
-      <p class="card-text">{{ book.book_writer }}</p>
+      <h5 class="card-title">{{ book.book_name|lower|title }}</h5>
+      <p class="card-text">{{ book.book_writer|lower|title }}</p>
       <input type="submit" value="Detay" class="btn btn-primary"/>
     </div>
   </form>
