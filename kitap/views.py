@@ -18,12 +18,21 @@ def search_book(req):
     return render(req, "search_page.html", context={"books": books})
 
 def book_info(req, id):
-  if req.method == "POST":
-    book = Book.objects.get(id=id)
-    return render(req, "book_info.html", context={"book": book})
+  book = Book.objects.get(id=id)
+  alis_tarihi = book.alis_tar
+  today = datetime.date.today()
 
-  else:
-    return redirect("search_book")
+  numOfDays = 0
+  if book.alan_og:
+    numOfDays = (today-alis_tarihi).days
+
+  danger = False
+  if numOfDays >= 15:
+    danger = True
+  print(numOfDays)
+
+  return render(req, "book_info.html", context={"book": book, "danger": danger, "numDays": numOfDays})
+
 
 def book_teslim(req, id):
   if req.method == "POST":
@@ -50,10 +59,12 @@ def book_teslim(req, id):
 
     book_update.update(alan_og=None, alis_tar=None, teslim_tar=None)
 
+    return redirect("search_book")
+
     # TODO: search sayfasına kitap teslim kabul edilmiştir diye mesaj göndercek
 
 
-  return redirect("search_book")
+  return redirect("book_info", id=id)
 
 def book_emanet(req, id):
   if req.method == "POST":
@@ -66,4 +77,4 @@ def book_emanet(req, id):
   
     return redirect("search_book")
 
-  return render(req, "emanet.html")
+  return redirect("book_info", id=id)

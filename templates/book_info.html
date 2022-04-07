@@ -1,16 +1,95 @@
 {% extends 'base.html' %}
 
+{% block head %}
+<style>
+  table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }
+  </style>
+{% endblock head %}
+
 {% block body %}
 <h1 style="font-size: 64px; text-align: center; margin: 5rem 0 2rem 0;">{{book.book_name|lower|title}}</h1>
-<h2 style="text-align: right; padding-right: 2rem; margin-top: 2rem;">Yazar: <span style="font-style: italic;">{{book.book_writer|lower|title}}</span></h2>
+<h2 style="text-align: right; padding-right: 2rem; margin-top: 5rem;">Yazar: <span style="font-style: italic;">{{book.book_writer|lower|title}}</span></h2>
+
 {% if book.alan_og %}
-<h4>{{book.alan_og}}</h4>
-<h5>{{book.alis_tar}}</h5>
-<form method="POST" action="{% url 'book_teslim' id=book.id %}">
-  {% csrf_token %}
-  <input type="submit" class="btn btn-success"/>
-</form>
+  <div id="ogrenci_bilgileri" style="width: 80%; margin: 5rem auto 0 auto;">
+    <h4 style="margin-bottom: 2rem;">Kitabı alan öğrenci: <b>{{book.alan_og|lower|title}}</b></h4>
+    <h5 style="margin-bottom: 2rem;">Kitabı aldığı tarih: {{book.alis_tar}}</h5>
+    {% if danger %}
+    <h5 style="margin-bottom: 2rem;">Kitap öğrencide <span class="text text-danger">{{ numDays }}</span> gün kaldı.</h5>
+    {% else %}
+    <h5 style="margin-bottom: 2rem;">Kitap öğrencide <span class="text text-success">{{ numDays }}</span> gün kaldı.</h5>
+    {% endif %}
+    <form method="POST" action="{% url 'book_teslim' id=book.id %}">
+      {% csrf_token %}
+      <input type="submit" value="Teslim Et" class="btn btn-success"/>
+      {# TODO: belki bir kod verilip sonra teslim alınırken o kod istenilebilir #}
+    </form>
+  </div>
 {% else %}
-<a class="btn btn-primary" style="text-align: cente; font-size: 24px;" href="./emanet/">Emanet Al</a>
+  <form style="width: 80%; margin: 5rem auto 0 auto;" method="POST" action="{% url 'book_emanet' id=book.id %}">
+    {% csrf_token %}
+    <div class="input-group mb-2">
+      <input type="submit" style="font-size: 18px;" value="Emanet Al" class="btn btn-primary"/>
+      <input type="text" id="sname" style="font-size: 18px;" name="ogrenci_ad" required />
+    </div>
+  </form>
+
 {% endif %}
+
+<div style="width: 80%; margin: 5rem auto 10rem auto;">
+  <p style="font-size: 16px; font-style: italic; opacity: 0.9;">Aşağıda kitabı son teslim eden öğrenciler sıralanmışır.</p>
+  <table id="tbla" >
+    <tr>
+      <th>Adı</th>
+      <th>Alış Tarihi</th>
+      <th>Geçen Gün</th>
+    </tr>
+    <tr>
+      <td>Alfreds Futterkiste</td>
+      <td>Maria Anders</td>
+      <td>Germany</td>
+    </tr>
+    <tr>
+      <td>Centro comercial Moctezuma</td>
+      <td>Francisco Chang</td>
+      <td>Mexico</td>
+    </tr>
+    <tr>
+      <td>Ernst Handel</td>
+      <td>Roland Mendel</td>
+      <td>Austria</td>
+    </tr>
+    <tr>
+      <td>Island Trading</td>
+      <td>Helen Bennett</td>
+      <td>UK</td>
+    </tr>
+    <tr>
+      <td>Laughing Bacchus Winecellars</td>
+      <td>Yoshi Tannamuri</td>
+      <td>Canada</td>
+    </tr>
+    <tr>
+      <td>Magazzini Alimentari Riuniti</td>
+      <td>Giovanni Rovelli</td>
+      <td>Italy</td>
+    </tr>
+  </table>
+</div>
+
+{# TODO: tabloda son 5 öğrencinin alma tarihi vs. olucak #}
 {% endblock body %}
