@@ -4,23 +4,54 @@ from django.shortcuts import render, HttpResponse, redirect
 from .models import *
 
 
+# Ana sayfada kitap arama kodu
 def search_book(req):
   if req.user.is_authenticated:
+    book_rent = Rent.objects.all().first()
+    all_books = Book.objects.all()
+    today = datetime.date.today()
     if req.method == "GET":
-      latebook = True
-      return render(req, "search_page.html", context={"latebook": latebook})
+      latebooks = []
+      latebook = False
+      if book_rent.idler != None:
+        for book in book_rent.idler:
+          gecen_zaman = (today-all_books.filter(id=book).first().alis_tar).days
+          print(gecen_zaman)
+          if gecen_zaman > 15:
+            latebooks.append([all_books.filter(id=book).first(), (today-all_books.filter(id=book).first().alis_tar).days])
+
+      if len(latebooks) != 0:
+        latebook = True
+
+      return render(req, "search_page.html", context={"latebook": latebook, "latebooks": latebooks})
+
+
+
     else: 
+      latebooks = []
+      latebook = False
+      if book_rent.idler != None:
+        for book in book_rent.idler:
+          gecen_zaman = (today-all_books.filter(id=book).first().alis_tar).days
+          print(gecen_zaman)
+          if gecen_zaman > 15:
+            latebooks.append([all_books.filter(id=book).first(), (today-all_books.filter(id=book).first().alis_tar).days])
+
+      if len(latebooks) != 0:
+        latebook = True
+
+
       book_name = req.POST.get("book_credation")
-      all_books = Book.objects.all()
       books = []
       for book in all_books:
         if  book_name.upper() in book.book_name.upper() or  book_name.upper() in book.book_writer.upper():
           books.append(book)
 
-      return render(req, "search_page.html", context={"books": books})
+      return render(req, "search_page.html", context={"books": books, "latebook": latebook, "latebooks": latebooks})
   
   return redirect("login")
 
+# Kitabin sayfasini gosteren kod
 def book_info(req, id):
   if req.user.is_authenticated:
     book = Book.objects.get(id=id)
@@ -46,11 +77,13 @@ def book_info(req, id):
 
   return redirect("login")
 
+# Emanet alinan kitap teslim edilirken yapilanlar
 def book_teslim(req, id):
   if req.user.is_authenticated:
     if req.method == "POST":
       book = Book.objects.get(id=id)
       book_update = Book.objects.filter(id=id)
+      book_rent = Rent.objects.all().first()
       today = datetime.date.today()
 
       gecen_gun = (today-book.alis_tar).days
@@ -71,6 +104,14 @@ def book_teslim(req, id):
       else:
         b.append(json_data)
 
+      idler = book_rent.idler
+      if idler != None:
+        if id in idler:
+          idler.remove(id)
+
+      book_rent.idler = idler
+      book_rent.save()
+
       book_update.update(alan_ogrenciler_json=b)
 
       book_update.update(alan_og=None, alis_tar=None, teslim_tar=None)
@@ -83,15 +124,27 @@ def book_teslim(req, id):
 
   return redirect("login")
 
+# Kitaplar emanet alinirken yapilan islemler
 def book_emanet(req, id):
   if req.user.is_authenticated:
     if req.method == "POST":
       book_update = Book.objects.filter(id=id)
+      book_rent = Rent.objects.all().first()
       today = datetime.date.today()
 
       ogrenci_ismi = req.POST.get("ogrenci_ad")
 
       book_update.update(alis_tar=today, alan_og=ogrenci_ismi)
+
+      idler = book_rent.idler
+      if book_rent.idler == None:
+        idler = [id]
+      else:
+        idler.append(id)
+
+      book_rent.idler = idler
+
+      book_rent.save()
     
       return redirect("search_book")
 

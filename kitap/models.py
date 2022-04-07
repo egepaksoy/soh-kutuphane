@@ -14,3 +14,9 @@ class Book(models.Model):
 
   def __str__(self):
       return self.book_name
+
+class Rent(models.Model):
+  idler = jsonfield.JSONField(verbose_name="Kitapların IDleri (Program Kendi dolduracak)", null=True, blank=True)
+
+  def __str__(self):
+      return "Emanet alınan kitaplar"

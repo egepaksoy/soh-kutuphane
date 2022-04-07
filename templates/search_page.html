@@ -47,7 +47,8 @@
 </div>
 {% endif %}
 {% if latebook %}
-  <div style="width: 80%; margin: 10rem auto 5rem auto;">
+  <hr/>
+  <div style="width: 80%; margin: 5rem auto 5rem auto;">
     <p style="font-size: 16px; font-style: italic; margin-left: 2rem;">Teslim süresi geçmiş kitaplar</p>
     <table id="tbla" >
       <tr>
@@ -56,12 +57,14 @@
         <th>Alış Tarihi</th>
         <th>Geçen Gün</th>
       </tr>
+      {% for latebook in latebooks %}
       <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td>{{ latebook.0.book_name|lower|title }}</td>
+        <td>{{ latebook.0.alan_og|lower|title }}</td>
+        <td>{{ latebook.0.alis_tar }}</td>
+        <td>{{ latebook.1 }}</td>
       </tr>
+      {% endfor %}
     </table>
   </div>
 {% endif %}
