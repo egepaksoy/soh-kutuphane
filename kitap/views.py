@@ -22,16 +22,22 @@ def book_info(req, id):
   alis_tarihi = book.alis_tar
   today = datetime.date.today()
 
+  alanog = []
+
   numOfDays = 0
   if book.alan_og:
     numOfDays = (today-alis_tarihi).days
+
+  if book.alan_ogrenciler_json != None:
+    alanog = book.alan_ogrenciler_json
+    alanog.reverse()
 
   danger = False
   if numOfDays >= 15:
     danger = True
   print(numOfDays)
 
-  return render(req, "book_info.html", context={"book": book, "danger": danger, "numDays": numOfDays})
+  return render(req, "book_info.html", context={"book": book, "danger": danger, "numDays": numOfDays, "alan_ogrenciler_json": alanog})
 
 
 def book_teslim(req, id):
@@ -40,12 +46,15 @@ def book_teslim(req, id):
     book_update = Book.objects.filter(id=id)
     today = datetime.date.today()
 
+    gecen_gun = (today-book.alis_tar).days
+
     book_update.update(teslim_tar=today)
 
     json_data = {
       "alan_og": book.alan_og,
       "alis_tar": book.alis_tar,
-      "teslim_tar": today
+      "teslim_tar": today,
+      "gecen_gun": gecen_gun,
     }
 
     b = book.alan_ogrenciler_json
@@ -59,7 +68,6 @@ def book_teslim(req, id):
 
     book_update.update(alan_og=None, alis_tar=None, teslim_tar=None)
 
-    return redirect("search_book")
 
     # TODO: search sayfasına kitap teslim kabul edilmiştir diye mesaj göndercek
 
