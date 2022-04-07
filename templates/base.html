@@ -19,9 +19,14 @@
         <a class="navbar-brand" style="font-size: 32px;" href="{% url 'search_book' %}"
           >SOH Kütüphane Programı</a
         >
+        {% if user.is_authenticated %}
         <div class="d-flex nav-item">
-          <a class="btn btn-outline-danger">Çıkış Yap</a>
+          <form method="POST" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <input type="submit" class="btn btn-outline-danger" value="Çıkış Yap" />
+          </form>
         </div>
+        {% endif %}
       </div>
     </nav>
 
