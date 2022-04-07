@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% block title %}{{ book.book_name|lower|title }}{% endblock title %}
+
 {% block head %}
 <style>
   table {
