@@ -28,7 +28,7 @@
 
 {% block body %}
 <h1 style="font-size: 64px; text-align: center; margin: 5rem 0 2rem 0;">{{book.book_name|lower|title}}</h1>
-<div style="width: 30%; margin: 2rem auto 0 auto;" id="tag-group"><a href="{% url 'category' tag=book.book_tag %}" class="btntag btn btn-outline-primary">{{ book.book_tag }}</a><a href="{% url 'category' tag=book.book_tag %}" class="btntag btn btn-outline-primary">{{ book.book_tag }}</a></div>
+<div style="width: 30%; margin: 2rem auto 0 auto;" id="tag-group"><a href="{% url 'category' tag=book.book_tag %}" class="btntag btn btn-outline-primary">{{ book.book_tag }}</a></div>
 <h2 style="text-align: right; padding-right: 2rem; margin-top: 5rem;">Yazar: <span style="font-style: italic;">{{book.book_writer|lower|title}}</span></h2>
 
 {% if book.alan_og %}
@@ -50,7 +50,7 @@
   <form style="width: 80%; margin: 5rem auto 0 auto;" method="POST" action="{% url 'book_emanet' id=book.id %}">
     {% csrf_token %}
     <div class="input-group mb-2">
-      <input type="submit" style="font-size: 18px;" value="Emanet Al" class="btn btn-secondary"/>
+      <input type="submit" style="font-size: 18px;" value="Emanet Al" class="btn btn-outline-secondary"/>
       <input type="text" id="sname" style="font-size: 18px;" name="ogrenci_ad" required />
     </div>
   </form>
@@ -68,7 +68,7 @@
     </tr>
     {% for ogrenci in alan_ogrenciler_json %}
       <tr>
-        <td>{{ ogrenci.alan_og }}</td>
+        <td>{{ ogrenci.alan_og|lower|title }}</td>
         <td>{{ ogrenci.alis_tar }}</td>
         <td>{{ ogrenci.teslim_tar }}</td>
         <td>{{ ogrenci.gecen_gun }}</td>
