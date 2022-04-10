@@ -7,6 +7,7 @@ from .models import *
 # Ana sayfada kitap arama kodu
 def search_book(req):
   if req.user.is_authenticated:
+    tags = ["islami", "felsefe", "tarih", "biyografi", "hikaye"]
     book_rent = Rent.objects.all().first()
     all_books = Book.objects.all()
     today = datetime.date.today()
@@ -16,14 +17,14 @@ def search_book(req):
       if book_rent.idler != None:
         for book in book_rent.idler:
           gecen_zaman = (today-all_books.filter(id=book).first().alis_tar).days
-          print(gecen_zaman)
           if gecen_zaman > 15:
             latebooks.append([all_books.filter(id=book).first(), (today-all_books.filter(id=book).first().alis_tar).days])
 
       if len(latebooks) != 0:
         latebook = True
 
-      return render(req, "search_page.html", context={"latebook": latebook, "latebooks": latebooks})
+
+      return render(req, "search_page.html", context={"latebook": latebook, "latebooks": latebooks, "tags": tags})
 
 
 
@@ -33,7 +34,6 @@ def search_book(req):
       if book_rent.idler != None:
         for book in book_rent.idler:
           gecen_zaman = (today-all_books.filter(id=book).first().alis_tar).days
-          print(gecen_zaman)
           if gecen_zaman > 15:
             latebooks.append([all_books.filter(id=book).first(), (today-all_books.filter(id=book).first().alis_tar).days])
 
@@ -47,7 +47,7 @@ def search_book(req):
         if  book_name.upper() in book.book_name.upper() or  book_name.upper() in book.book_writer.upper():
           books.append(book)
 
-      return render(req, "search_page.html", context={"books": books, "latebook": latebook, "latebooks": latebooks})
+      return render(req, "search_page.html", context={"books": books, "latebook": latebook, "latebooks": latebooks, "tags": tags})
   
   return redirect("login")
 
@@ -71,7 +71,6 @@ def book_info(req, id):
     danger = False
     if numOfDays >= 15:
       danger = True
-    print(numOfDays)
 
     return render(req, "book_info.html", context={"book": book, "danger": danger, "numDays": numOfDays, "alan_ogrenciler_json": alanog})
 
@@ -151,3 +150,10 @@ def book_emanet(req, id):
     return redirect("book_info", id=id)
 
   return redirect("login")
+
+
+def book_category(req, tag):
+  if req.user.is_authenticated:
+    books = Book.objects.filter(book_tag=tag)
+
+    return render(req, "book_tag.html", context={"books": books, "tag": tag})

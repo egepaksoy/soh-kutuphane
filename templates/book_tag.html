@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block head %}{% endblock head %}
+{% block title %}Kategori: {{ tag|lower|title }}{% endblock title %}
+
+{% block body %}
+
+{% if books %}
+<div id="books" style="margin-bottom: 10rem;">
+  <p style="width: 50%; margin: 5rem auto 3rem auto; font-style: italic; opacity: 0.8;">{{ tag|lower|title }} kitap kategorisinde {{ books|length }} adet kitap bulunmakta.</p>
+  {% for book in books %}
+  <div class="card" style="width: 50%; margin: 2rem auto; background-color: #f5f5f5;">
+      <div class="card-body">
+        <h5 class="card-title" style="text-align: center; font-size: 26px; margin: 2rem 0 1rem 0;">{{ book.book_name|lower|title }}</h5>
+        <p style="margin-bottom: 1rem;"><p class="card-text" style="text-align: right; font-size: 18px; font-style: italic;">{{ book.book_writer|lower|title }}</p>
+        <p class="card-text" style="text-align: left; font-size: 16px; font-style: italic; opacity: 0.8;">{{ book.book_tag }}</p></p>
+        {% if book.alan_og %}
+          <a href="./{{book.id}}/" type="submit" class="btn btn-success">Teslim<a/>
+        {% else %}
+          <a href="./{{book.id}}/" type="submit" class="btn btn-primary">Emanet<a/>
+        {% endif %}
+      </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div style="width: 60%; margin: 5rem auto; text-align: center; font-size: 20px;" class="alert alert-warning" role="alert">
+  <b>{{ tag|lower|title }} kategorisinde hiç kitap bulunmuyor.</b>
+</div>
+{% endif %}
+
+{% endblock body %}
