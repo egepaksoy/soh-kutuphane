@@ -8,7 +8,12 @@ class Book(models.Model):
     ("felsefe","Felsefe"),
     ("tarih","Tarih"),
     ("biyografi","Biyografi"),
-    ("hikaye","Hikaye"),
+    ("deneme","Deneme"),
+    ("edebiyat", "Edebiyat"),
+    ("yabancı dil", "Yabancı Dil"),
+    ("fen bilimleri", "Fen bilimleri"),
+    ("roman", "Roman"),
+    ("din", "Din"),
   ]
   book_name = models.CharField(verbose_name="Kitabın Adı (Sorumlu kisi doldurmalı)", max_length=100, blank=False)
   book_writer = models.CharField(verbose_name="Kitabın Yazarı (Sorumlu kisi doldurmalı)", max_length=100, blank=False)

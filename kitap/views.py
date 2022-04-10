@@ -7,7 +7,7 @@ from .models import *
 # Ana sayfada kitap arama kodu
 def search_book(req):
   if req.user.is_authenticated:
-    tags = ["islami", "felsefe", "tarih", "biyografi", "hikaye"]
+    tags = ["islami", "felsefe", "tarih", "biyografi", "edebiyat", "din", "yabancı dil", "fen bilimleri", "deneme", "roman"]
     book_rent = Rent.objects.all().first()
     all_books = Book.objects.all()
     today = datetime.date.today()
