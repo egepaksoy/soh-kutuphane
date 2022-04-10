@@ -14,9 +14,9 @@
         <p style="margin-bottom: 1rem;"><p class="card-text" style="text-align: right; font-size: 18px; font-style: italic;">{{ book.book_writer|lower|title }}</p>
         <p class="card-text" style="text-align: left; font-size: 16px; font-style: italic; opacity: 0.8;">{{ book.book_tag }}</p></p>
         {% if book.alan_og %}
-          <a href="./{{book.id}}/" type="submit" class="btn btn-success">Teslim<a/>
+          <a href="{% url 'book_info' id=book.id %}" type="submit" class="btn btn-success">Teslim<a/>
         {% else %}
-          <a href="./{{book.id}}/" type="submit" class="btn btn-primary">Emanet<a/>
+          <a href="{% url 'book_info' id=book.id %}" type="submit" class="btn btn-primary">Emanet<a/>
         {% endif %}
       </div>
   </div>
