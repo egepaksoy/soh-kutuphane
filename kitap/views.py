@@ -157,6 +157,8 @@ def book_category(req, tag):
 
     return render(req, "book_tag.html", context={"books": books, "tag": tag})
 
+  return redirect("login")
+
 
 def book_relics(req):
   if req.user.is_authenticated:
