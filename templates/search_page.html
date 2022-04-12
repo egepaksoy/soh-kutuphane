@@ -1,37 +1,15 @@
 {% extends 'base.html' %}
 {% block title %}ŞÖH Kütüphane Programı{% endblock title %}
 {% block head %}
-<style>
-  table {
-    font-family: arial, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-  }
-  
-  td, th {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
-  }
-  
-  tr:nth-child(even) {
-    background-color: #dddddd;
-  }
-  </style>
 {% endblock head %}
 {% block body %}
 
-<div style="margin-bottom: 2rem;">
+<div style="margin: 10rem 0 2rem 0;">
   <form method="POST" action="./" class="input-group mb-2" style="width: 60%; margin: 5rem auto 0 auto;">
     {% csrf_token %}
     <input style="font-size: 20px;" type="text" class="form-control" placeholder="Kitap veya Yazar adı girin" aria-label="Recipient's username" name="book_credation" aria-describedby="button-addon2">
     <button style="font-size: 20px" class="btn btn-outline-secondary" type="submit" id="search">Ara 🔎</button>
   </form>
-</div>
-<div style="width: 40%; margin: 2rem auto;" class="categories">
-  {% for tag in tags %}
-    <a href="{% url 'category' tag=tag %}" style="margin: 0 0.5rem 0.5rem 0.5rem;" class="btn btn-primary">{{tag}}</a>
-  {% endfor %}
 </div>
 
 {% if books %}

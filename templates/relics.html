@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Getirmeyenler{% endblock title %}
+{% block head %}
+{% endblock head %}
+{% block body %}
+
+  <div style="width: 80%; margin: 9rem auto 5rem auto;">
+    <h2 style="text-align: center; margin-bottom: 3rem;">Emanet Alınan Kitaplar</h2>
+    <table id="tbla" >
+      <tr>
+        <th>Kitap Adı</th>
+        <th>Alan Öğrenci</th>
+        <th>Alış Tarihi</th>
+        <th>Geçen Gün</th>
+      </tr>
+      {% for latebook in latebooks %}
+      <tr>
+        <td>{{ latebook.0.book_name|lower|title }}</td>
+        <td>{{ latebook.0.alan_og|lower|title }}</td>
+        <td>{{ latebook.0.alis_tar }}</td>
+        {% if latebook.1 > 15 %}
+        <td class="text text-danger">{{ latebook.1 }}</td>
+        {% else %}
+        <td class="text text-success">{{ latebook.1 }}</td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+{% endblock body %}

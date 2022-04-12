@@ -7,7 +7,6 @@ from .models import *
 # Ana sayfada kitap arama kodu
 def search_book(req):
   if req.user.is_authenticated:
-    tags = ["islami", "felsefe", "tarih", "biyografi", "edebiyat", "din", "yabancı dil", "fen bilimleri", "deneme", "roman"]
     book_rent = Rent.objects.all().first()
     all_books = Book.objects.all()
     today = datetime.date.today()
@@ -24,7 +23,7 @@ def search_book(req):
         latebook = True
 
 
-      return render(req, "search_page.html", context={"latebook": latebook, "latebooks": latebooks, "tags": tags})
+      return render(req, "search_page.html", context={"latebook": latebook, "latebooks": latebooks})
 
 
 
@@ -47,7 +46,7 @@ def search_book(req):
         if  book_name.upper() in book.book_name.upper() or  book_name.upper() in book.book_writer.upper():
           books.append(book)
 
-      return render(req, "search_page.html", context={"books": books, "latebook": latebook, "latebooks": latebooks, "tags": tags})
+      return render(req, "search_page.html", context={"books": books, "latebook": latebook, "latebooks": latebooks})
   
   return redirect("login")
 
@@ -157,3 +156,20 @@ def book_category(req, tag):
     books = Book.objects.filter(book_tag=tag)
 
     return render(req, "book_tag.html", context={"books": books, "tag": tag})
+
+
+def book_relics(req):
+  if req.user.is_authenticated:
+    tags = ["islami", "felsefe", "tarih", "biyografi", "edebiyat", "din", "yabancı dil", "fen bilimleri", "deneme", "roman"]
+    book_rent = Rent.objects.all().first()
+    all_books = Book.objects.all()
+    today = datetime.date.today()
+    latebooks = []
+    if book_rent.idler != None:
+      for book in book_rent.idler:
+        latebooks.append([all_books.filter(id=book).first(), (today-all_books.filter(id=book).first().alis_tar).days])
+
+
+    return render(req, "relics.html", context={"latebooks": latebooks})
+
+  return redirect("login")

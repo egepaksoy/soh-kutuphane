@@ -10,27 +10,128 @@
       integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
       crossorigin="anonymous"
     />
+<style>
+  table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }
+  </style>
     <title>{% block title %}{% endblock title %}</title>
     {% block head %}{% endblock head %}
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-light bg-light fixed-top">
       <div class="container-fluid">
-        <a class="navbar-brand" style="font-size: 32px;" href="{% url 'search_book' %}"
+        <a class="navbar-brand" style="font-size: 24px;" href="{% url 'search_book' %}"
           >ŞÖH Kütüphane Programı</a
         >
-        {% if user.is_authenticated %}
-        <div class="d-flex nav-item">
-          <form method="POST" action="{% url 'logout' %}">
-            {% csrf_token %}
-            <input type="submit" class="btn btn-outline-danger" value="Çıkış Yap" />
-          </form>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#offcanvasNavbar"
+          aria-controls="offcanvasNavbar"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div
+          class="offcanvas offcanvas-end"
+          tabindex="-1"
+          id="offcanvasNavbar"
+          aria-labelledby="offcanvasNavbarLabel"
+        >
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">
+              Kütüphane Programı
+            </h5>
+            <button
+              type="button"
+              class="btn-close text-reset"
+              data-bs-dismiss="offcanvas"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="offcanvas-body">
+            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+              <li class="nav-item">
+                <a class="nav-link active" href="{% url 'relics' %}">Emanet Alınan Kitaplar</a>
+              </li>
+              <li class="nav-item dropdown mb-2">
+                <a
+                  class="nav-link dropdown-toggle active"
+                  href="#"
+                  id="offcanvasNavbarDropdown"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Kütüphane Kitapları
+                </a>
+                <ul
+                  class="dropdown-menu"
+                  aria-labelledby="offcanvasNavbarDropdown"
+                >
+                  <li><a class="dropdown-item" href="{% url 'category' tag="islami" %}">İslami</a></li>
+                  <li><a class="dropdown-item" href="{% url 'category' tag="felsefe" %}">Felsefe</a></li>
+                  <li><a class="dropdown-item" href="{% url 'category' tag="tarih" %}">Tarih</a></li
+                  <li><a class="dropdown-item" href="{% url 'category' tag="biyografi" %}">Biyografi</a></li>
+                  <li><a class="dropdown-item" href="{% url 'category' tag="deneme" %}">Deneme</a></li>
+                  <li><a class="dropdown-item" href="{% url 'category' tag="edebiyat" %}">Edebiyat</a></li>
+                  <li><a class="dropdown-item" href="{% url 'category' tag="yabancı dil" %}">Yabancı Dil</a></li>
+                  <li><a class="dropdown-item" href="{% url 'category' tag="fen bilimleri" %}">Fen Bilimleri</a></li>
+                  <li><a class="dropdown-item" href="{% url 'category' tag="roman" %}">Roman</a></li>
+                  <li><a class="dropdown-item" href="{% url 'category' tag="din" %}">Din</a></li>
+                </ul>
+              </li>
+            </ul>
+            {# Kitap arama #}
+            <form method="POST" action="{% url 'search_book' %}" class="d-flex">
+              {% csrf_token %}
+              <input
+                class="form-control"
+                type="search"
+                placeholder="Kitap veya Yazar adı girin"
+                aria-label="Arama"
+                name="book_credation"
+              />
+              <button
+                class="btn btn-outline-secondary"
+                type="submit"
+                id="search"
+              >
+                Ara
+              </button>
+            </form>
+            {% if user.is_authenticated %}
+            <div class="d-flex nav-item fixed-bottom" style="justify-content: right; padding: 0 2rem 1rem 0;">
+              <form method="POST" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <input
+                  type="submit"
+                  class="btn btn-outline-danger"
+                  value="Çıkış Yap"
+                />
+              </form>
+            </div>
+            {% endif %}
+          </div>
         </div>
-        {% endif %}
       </div>
     </nav>
 
     {% block body %}{% endblock body %}
+
     <script
       src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
       integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"

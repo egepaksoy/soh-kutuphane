@@ -9,4 +9,5 @@ urlpatterns = [
     path('search/<int:id>/emanet/', views.book_emanet, name="book_emanet"),
     path('search/<int:id>/teslim/', views.book_teslim, name="book_teslim"),
     path('category/<str:tag>/', views.book_category, name="category"),
+    path('relics/', views.book_relics, name="relics"),
 ]
