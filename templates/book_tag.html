@@ -6,7 +6,7 @@
 
 {% if books %}
 <div id="books" style="margin-bottom: 10rem;">
-  <p style="width: 50%; margin: 5rem auto 3rem auto; font-style: italic; opacity: 0.8;">{{ tag|lower|title }} kitap kategorisinde {{ books|length }} adet kitap bulunmakta.</p>
+  <p style="width: 50%; margin: 8rem auto 3rem auto; font-style: italic; opacity: 0.8;">{{ tag|lower|title }} kitap kategorisinde {{ books|length }} adet kitap bulunmakta.</p>
   {% for book in books %}
   <div class="card" style="width: 50%; margin: 2rem auto; background-color: #f5f5f5;">
       <div class="card-body">
@@ -23,7 +23,7 @@
   {% endfor %}
 </div>
 {% else %}
-<div style="width: 60%; margin: 5rem auto; text-align: center; font-size: 20px;" class="alert alert-warning" role="alert">
+<div style="width: 60%; margin: 8rem auto; text-align: center; font-size: 20px;" class="alert alert-warning" role="alert">
   <b>{{ tag|lower|title }} kategorisinde hiç kitap bulunmuyor.</b>
 </div>
 {% endif %}
