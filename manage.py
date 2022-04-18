@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# TODO: kitaplari birkac sayfada getirme ozelligi ekle
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
