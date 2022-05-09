@@ -41,6 +41,8 @@ def search_book(req):
 
 
       book_name = req.POST.get("book_credation")
+      if book_name == "" or book_name == None:
+        return redirect("search_book")
       books = []
       for book in all_books:
         if  book_name.upper() in book.book_name.upper() or  book_name.upper() in book.book_writer.upper():
